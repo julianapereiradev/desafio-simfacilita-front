@@ -21,7 +21,7 @@ const Container = styled.div`
   height: 100%;
   width: 100%;
   overflow-y: auto;
-  background-color: #be7f7f;
+  background-color: #ffffff;
   
   margin-top: 70px;
   height: calc(100vh - 80px);

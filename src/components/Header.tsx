@@ -21,7 +21,7 @@ display: flex;
   justify-content: left;
   align-items: center;
   height: 70px;
-  background-color: #ffffff;
+  background-color: #e5e5e5;
   position: fixed;
   width: 100%;
   top: 0;

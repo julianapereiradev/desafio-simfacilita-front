@@ -30,7 +30,7 @@ export default function SignInPage() {
     axios
       .post(API.postLogin, newUser)
       .then(() => {
-        navigate("/timeline");
+        navigate("/dashboard/timeline");
         setDisable(false);
       })
       .catch((error) => {
