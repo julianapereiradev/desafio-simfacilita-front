@@ -2,11 +2,19 @@ import styled from "styled-components";
 import { PostType } from "../../interfaces/interfaces";
 import { FaComment } from "react-icons/fa";
 import dayjs from "dayjs";
+import { useState } from "react";
+import CommentList from "./CommentList";
 
 export default function PostList({ postData }: { postData: PostType }) {
   console.log("postsdata", postData);
 
   const formattedDate = dayjs(postData.createdAt).format("DD-MM-YYYY");
+  const [clickComment, setClickComment] = useState(false);
+
+  function showComments() {
+    //alert("Clicou no button");
+    setClickComment((prevClickComment) => !prevClickComment);
+  }
 
   return (
     <ContainerPost>
@@ -24,9 +32,17 @@ export default function PostList({ postData }: { postData: PostType }) {
       </MessagePost>
 
       <ButtonPost>
-        <button>
+        <button onClick={showComments}>
           <FaCommentIcon />
         </button>
+        {clickComment ? ( 
+          <div>
+           {postData.Comment.map((item) => <CommentList commentsData={item} /> )}
+            <input type="text" placeholder="Escreva um comentário aqui..."/>
+          </div>  
+        ) : (
+          <h1>Nao aparece comentario</h1>
+        )}
       </ButtonPost>
     </ContainerPost>
   );
@@ -77,11 +93,11 @@ const MessagePost = styled.div`
     height: 100%;
     min-height: 200px;
     border: 1px solid black;
+    padding: 10px;
   }
 `;
 
 const ButtonPost = styled.div`
-  
   button {
     background-color: #ffffff;
     border: none;
@@ -89,7 +105,7 @@ const ButtonPost = styled.div`
 `;
 
 const FaCommentIcon = styled(FaComment)`
-    width: 25px;
-    height: 25px;
-    color: #7f3e98;
+  width: 25px;
+  height: 25px;
+  color: #7f3e98;
 `;
