@@ -9,7 +9,7 @@ export default function MyProfilePage() {
     return null; // or display an error message, redirect, etc.
   }
 
-  const { userId, setUserId, isLogged } = loginContext;
+  const { userId, isLogged } = loginContext;
 
   useEffect(() => {
     isLogged();

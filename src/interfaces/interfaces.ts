@@ -21,3 +21,7 @@ export interface CommentType {
     Comment: CommentType[];
     User: UserType;
   }
+
+  export interface MyPostType {
+    description: string;
+}

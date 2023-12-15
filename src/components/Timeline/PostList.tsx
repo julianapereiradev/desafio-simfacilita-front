@@ -1,26 +1,44 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import { PostType } from "../../interfaces/interfaces";
 import { FaComment } from "react-icons/fa";
 import dayjs from "dayjs";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useContext, useEffect } from "react";
 import CommentList from "./CommentList";
 import axios from "axios";
 import { API } from "../../routes/routes";
+import { LoginContext } from "../../context/Context";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 interface FormState {
   comment: string;
 }
 
 export default function PostList({ postData }: { postData: PostType }) {
-  console.log("postsdata", postData);
+  const loginContext = useContext(LoginContext);
+
+  if (!loginContext) {
+    // Handle the case where the context is undefined
+    return null; // or display an error message, redirect, etc.
+  }
+
+  const { userId, isLogged } = loginContext;
 
   const formattedDate = dayjs(postData.createdAt).format("DD-MM-YYYY");
   const [clickComment, setClickComment] = useState(false);
   const [formState, setFormState] = useState({
     comment: "",
   });
-  const navigate = useNavigate();
+
+  const MySwal = withReactContent(Swal);
+
+  useEffect(() => {
+    isLogged();
+  }, []);
+
+  function CommentLimitError() {
+    return <p>O comentário não pode ter mais de 150 caracteres.!</p>;
+  }
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const newFormStates = { ...formState };
@@ -29,14 +47,28 @@ export default function PostList({ postData }: { postData: PostType }) {
   }
 
   function submitForm(e: FormEvent<HTMLFormElement>) {
-    console.log('ativou o submit form')
     e.preventDefault();
-    const newUser = { ...formState };
+
+    if (formState.comment.length > 150) {
+      MySwal.fire({
+        title: "Oops... 😓",
+        html: <CommentLimitError />,
+        timer: 5000,
+        confirmButtonText: "OK",
+      });
+      return; // Impede a execução do restante da função se o comentário for muito longo.
+    }
+
+    const newUser = {
+      ...formState,
+      userId: Number(userId),
+      postId: postData.id,
+    };
 
     axios
       .post(API.postComment, newUser)
       .then(() => {
-        navigate("/dashboard/timeline");
+        window.location.reload();
       })
       .catch((error) => {
         alert(error.response.data);
@@ -44,7 +76,6 @@ export default function PostList({ postData }: { postData: PostType }) {
   }
 
   function showComments() {
-    //alert("Clicou no button");
     setClickComment((prevClickComment) => !prevClickComment);
   }
 
@@ -72,7 +103,7 @@ export default function PostList({ postData }: { postData: PostType }) {
             {postData.Comment.map((item) => (
               <CommentList commentsData={item} />
             ))}
-            <form onSubmit={(e) => submitForm(e)}>
+            <FormNewComment onSubmit={(e) => submitForm(e)}>
               <input
                 id="comment"
                 autoComplete="comment"
@@ -82,10 +113,10 @@ export default function PostList({ postData }: { postData: PostType }) {
                 placeholder="Escreva um comentário aqui..."
                 onChange={(e) => handleChange(e)}
               />
-            </form>
+            </FormNewComment>
           </div>
         ) : (
-          <h1>Nao aparece comentario</h1>
+          ""
         )}
       </ButtonPost>
     </ContainerPost>
@@ -135,7 +166,7 @@ const MessagePost = styled.div`
   div {
     width: 100%;
     height: 100%;
-    min-height: 200px;
+    min-height: 100px;
     border: 1px solid black;
     padding: 10px;
   }
@@ -152,4 +183,12 @@ const FaCommentIcon = styled(FaComment)`
   width: 25px;
   height: 25px;
   color: #7f3e98;
+`;
+
+const FormNewComment = styled.form`
+  input {
+    //background-color: red;
+    width: 90%;
+    height: 40px;
+  }
 `;

@@ -6,5 +6,5 @@ export const API = {
     getUsers: API_URL + '/users',
     getAllPosts: API_URL + '/timeline',
     postComment: API_URL + '/comments',
-
+    createPost: API_URL + '/timeline',
 }

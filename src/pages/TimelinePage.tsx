@@ -9,6 +9,7 @@ import UserList from "../components/Timeline/UserList";
 import { PostType, UserType } from "../interfaces/interfaces";
 import PostList from "../components/Timeline/PostList";
 import { LoginContext } from "../context/Context";
+import MyPost from "../components/Timeline/MyPost";
 
 
 export default function TimelinePage() {
@@ -20,7 +21,7 @@ export default function TimelinePage() {
     return null; // or display an error message, redirect, etc.
   }
 
-  const { userId, setUserId, isLogged } = loginContext;
+  const { userId, isLogged } = loginContext;
 
   const [usersData, setUsersData] = useState<UserType[]>([]);
   const [postsData, setPostsData] = useState<PostType[]>([]);
@@ -60,7 +61,8 @@ export default function TimelinePage() {
 
       axios.get(API.getAllPosts)
       .then((res) => {
-        setPostsData(res.data);
+        const reversedPosts = res.data.reverse();
+        setPostsData(reversedPosts);
       })
       .catch((error) => {
         MySwal.fire({
@@ -77,8 +79,6 @@ export default function TimelinePage() {
     return <Loading />
   }
 
-  //console.log("postsdata", postsData)
-
   return (
     <>
     {/* TODOS OS USERS */}
@@ -86,7 +86,9 @@ export default function TimelinePage() {
     {usersData.map((item) => <UserList userData={item} />)}
     </RowUsers>
 
-    {/* ADICIONAR COMPONENTE DE CRIAR POST */}
+    <PostDiv>
+    <MyPost />
+    </PostDiv>
 
 
     {/* TODOS OS POSTS */}

@@ -21,7 +21,7 @@ export default function SignInPage() {
     return null; // or display an error message, redirect, etc.
   }
 
-  const { userId, setUserId } = loginContext;
+  const { setUserId } = loginContext;
 
   const [formStates, setFormStates] = useState<FormStates>({
     email: "",
