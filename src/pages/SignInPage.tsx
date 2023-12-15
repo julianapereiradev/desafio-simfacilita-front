@@ -2,9 +2,10 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { API } from "../routes/routes";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import logo from "../images/logo.png";
+import { LoginContext } from "../context/Context";
 
 interface FormStates {
   email: string;
@@ -12,6 +13,16 @@ interface FormStates {
 }
 
 export default function SignInPage() {
+
+  const loginContext = useContext(LoginContext);
+
+  if (!loginContext) {
+    // Handle the case where the context is undefined
+    return null; // or display an error message, redirect, etc.
+  }
+
+  const { userId, setUserId } = loginContext;
+
   const [formStates, setFormStates] = useState<FormStates>({
     email: "",
     password: "",
@@ -29,9 +40,11 @@ export default function SignInPage() {
 
     axios
       .post(API.postLogin, newUser)
-      .then(() => {
+      .then((res) => {
         navigate("/dashboard/timeline");
         setDisable(false);
+        setUserId(res.data.userId)
+        localStorage.setItem("userId", res.data.userId);
       })
       .catch((error) => {
         alert(error.response.data);

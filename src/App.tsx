@@ -7,11 +7,14 @@ import SignInPage from "./pages/SignInPage";
 import Dashboard from "./pages/Dashboard";
 import MyProfilePage from "./pages/MyProfilePage";
 import FriendPage from "./pages/FriendPage";
+import { LoginProvider } from "./context/Context";
 
 export default function App() {
+
   return (
     <PagesContainer>
       <BrowserRouter>
+      <LoginProvider>
         <Routes>
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/" element={<SignInPage />} />
@@ -25,8 +28,8 @@ export default function App() {
         <Route path="*" element={<ErrorPage />} />
         </Route>
 
-
         </Routes>
+    </LoginProvider>
       </BrowserRouter>
     </PagesContainer>
   );

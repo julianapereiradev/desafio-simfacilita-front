@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { API } from "../routes/routes";
 import Swal from "sweetalert2";
@@ -8,13 +8,30 @@ import Loading from "../components/Loading";
 import UserList from "../components/Timeline/UserList";
 import { PostType, UserType } from "../interfaces/interfaces";
 import PostList from "../components/Timeline/PostList";
+import { LoginContext } from "../context/Context";
 
 
 export default function TimelinePage() {
+
+  const loginContext = useContext(LoginContext);
+
+  if (!loginContext) {
+    // Handle the case where the context is undefined
+    return null; // or display an error message, redirect, etc.
+  }
+
+  const { userId, setUserId, isLogged } = loginContext;
+
   const [usersData, setUsersData] = useState<UserType[]>([]);
   const [postsData, setPostsData] = useState<PostType[]>([]);
 
   const MySwal = withReactContent(Swal);
+
+
+  useEffect(() => {
+    isLogged();
+  },[])
+
 
   function UsersDataError() {
     return <p>Não foi possível carregar os usuários!</p>;
@@ -24,6 +41,7 @@ export default function TimelinePage() {
     return <p>Não foi possível carregar todos os posts!</p>;
   }
 
+  console.log('ver userId em timeline:', userId)
 
   useEffect(() => {
     axios.get(API.getUsers)

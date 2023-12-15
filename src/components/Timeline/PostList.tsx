@@ -1,15 +1,47 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { PostType } from "../../interfaces/interfaces";
 import { FaComment } from "react-icons/fa";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import CommentList from "./CommentList";
+import axios from "axios";
+import { API } from "../../routes/routes";
+
+interface FormState {
+  comment: string;
+}
 
 export default function PostList({ postData }: { postData: PostType }) {
   console.log("postsdata", postData);
 
   const formattedDate = dayjs(postData.createdAt).format("DD-MM-YYYY");
   const [clickComment, setClickComment] = useState(false);
+  const [formState, setFormState] = useState({
+    comment: "",
+  });
+  const navigate = useNavigate();
+
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const newFormStates = { ...formState };
+    newFormStates[e.target.id as keyof FormState] = e.target.value;
+    setFormState(newFormStates);
+  }
+
+  function submitForm(e: FormEvent<HTMLFormElement>) {
+    console.log('ativou o submit form')
+    e.preventDefault();
+    const newUser = { ...formState };
+
+    axios
+      .post(API.postComment, newUser)
+      .then(() => {
+        navigate("/dashboard/timeline");
+      })
+      .catch((error) => {
+        alert(error.response.data);
+      });
+  }
 
   function showComments() {
     //alert("Clicou no button");
@@ -35,11 +67,23 @@ export default function PostList({ postData }: { postData: PostType }) {
         <button onClick={showComments}>
           <FaCommentIcon />
         </button>
-        {clickComment ? ( 
+        {clickComment ? (
           <div>
-           {postData.Comment.map((item) => <CommentList commentsData={item} /> )}
-            <input type="text" placeholder="Escreva um comentário aqui..."/>
-          </div>  
+            {postData.Comment.map((item) => (
+              <CommentList commentsData={item} />
+            ))}
+            <form onSubmit={(e) => submitForm(e)}>
+              <input
+                id="comment"
+                autoComplete="comment"
+                value={formState.comment}
+                required
+                type="text"
+                placeholder="Escreva um comentário aqui..."
+                onChange={(e) => handleChange(e)}
+              />
+            </form>
+          </div>
         ) : (
           <h1>Nao aparece comentario</h1>
         )}
