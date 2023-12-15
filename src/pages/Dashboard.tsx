@@ -20,10 +20,10 @@ const Container = styled.div`
   padding: 30px;
   height: 100%;
   width: 100%;
-  overflow-y: auto;
+  //overflow-y: auto;
   background-color: #ffffff;
   
   margin-top: 70px;
-  height: calc(100vh - 80px);
-
+  margin-bottom: 70px;
+  //height: calc(100vh - 80px);
 `;

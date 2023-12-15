@@ -10,7 +10,7 @@ export default function Footer() {
     <FooterContainer>
         <Links to="timeline"><FaHomeIcon/></Links>
         <Links to="myrofile/:id"><FaUserIcon /></Links>
-        <Links to="logout"><IoLogOutIcon /></Links>
+        <Links to="/"><IoLogOutIcon /></Links>
     </FooterContainer>
   );
 }

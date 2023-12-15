@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { UserType } from "../../interfaces/interfaces";
 
 export default function UserList({ userData }: { userData: UserType }) {
+  
   return (
     <ContainerUser>
       <img src={userData.profileUrl} alt="user_profile" />
@@ -18,7 +19,7 @@ const ContainerUser = styled.div`
   border-radius: 9px;
   margin: 5px 20px 5px 0px;
   background-color: #ffffff;
-  width: 150px;
+  width: 180px;
   padding: 10px;
 
   img {
