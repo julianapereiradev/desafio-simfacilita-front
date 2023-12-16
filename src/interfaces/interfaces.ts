@@ -35,3 +35,7 @@ export interface CommentType {
   export interface MyPostType {
     description: string;
 }
+
+export interface FollowType {
+  followerId: number;
+}

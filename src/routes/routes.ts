@@ -7,5 +7,7 @@ export const API = {
     getAllPosts: API_URL + '/timeline',
     postComment: API_URL + '/comments',
     createPost: API_URL + '/timeline',
-    getAllUserPosts: API_URL + '/timeline/'
+    getAllUserPosts: API_URL + '/timeline/',
+    followOrUnfollow: API_URL + '/follow/',
+    getFollowers: API_URL + '/followers/',
 }
