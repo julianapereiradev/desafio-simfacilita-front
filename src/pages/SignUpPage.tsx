@@ -98,7 +98,7 @@ export default function SignUpPage() {
 
           <input
             id="phone"
-            placeholder="Telefone"
+            placeholder="Telefone Celular"
             type="text"
             value={formStates.phone}
             onChange={(e) => handleChange(e)}

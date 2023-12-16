@@ -1,14 +1,23 @@
 import styled from "styled-components";
 import { UserType } from "../../interfaces/interfaces";
+import { useNavigate } from "react-router-dom";
+
 
 export default function UserList({ userData }: { userData: UserType }) {
+  const navigate = useNavigate();
+
+  function submit(){
+    navigate(`/dashboard/friend/${userData.id}`)
+  }
   
   return (
-    <ContainerUser>
-      <img src={userData.profileUrl} alt="user_profile" />
-      <UsersName>{userData.name}</UsersName>
-      <UsersName>{userData.lastName}</UsersName>
-    </ContainerUser>
+    <>
+        <ContainerUser onClick={submit}>
+          <img src={userData.profileUrl} alt="user_profile" />
+          <UsersName>{userData.name}</UsersName>
+          <UsersName>{userData.lastName}</UsersName>
+        </ContainerUser>
+    </>
   );
 }
 
@@ -21,6 +30,7 @@ const ContainerUser = styled.div`
   background-color: #ffffff;
   width: 180px;
   padding: 10px;
+  cursor: pointer;
 
   img {
     width: 90px;
