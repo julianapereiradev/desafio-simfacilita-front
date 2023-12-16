@@ -3,13 +3,24 @@ import { Link } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
+import { useContext } from "react";
+import { LoginContext } from "../context/Context";
 
 
 export default function Footer() {
+  const loginContext = useContext(LoginContext);
+
+  if (!loginContext) {
+    // Handle the case where the context is undefined
+    return null; // or display an error message, redirect, etc.
+  }
+
+  const { userId} = loginContext;
+
   return (
     <FooterContainer>
         <Links to="timeline"><FaHomeIcon/></Links>
-        <Links to="myrofile/:id"><FaUserIcon /></Links>
+        <Links to={`myprofile/${userId}`}><FaUserIcon /></Links>
         <Links to="/"><IoLogOutIcon /></Links>
     </FooterContainer>
   );

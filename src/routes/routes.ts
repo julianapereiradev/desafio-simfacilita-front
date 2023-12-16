@@ -10,4 +10,6 @@ export const API = {
     getAllUserPosts: API_URL + '/timeline/',
     followOrUnfollow: API_URL + '/follow/',
     getFollowers: API_URL + '/followers/',
+    getProfileId: API_URL + '/user/',
+    putProfileId: API_URL + '/user/'
 }

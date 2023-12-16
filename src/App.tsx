@@ -7,10 +7,10 @@ import SignInPage from "./pages/SignInPage";
 import Dashboard from "./pages/Dashboard";
 import MyProfilePage from "./pages/MyProfilePage";
 import FriendPage from "./pages/FriendPage";
-import { LoginProvider } from "./context/Context";
+import { LoginContext, LoginProvider } from "./context/Context";
+import { useContext } from "react";
 
 export default function App() {
-
   return (
     <PagesContainer>
       <BrowserRouter>
@@ -23,7 +23,7 @@ export default function App() {
           }
         >
         <Route path="timeline" element={<TimelinePage />} />
-        <Route path="myrofile/:id" element={<MyProfilePage />} />
+        <Route path="myprofile/:id" element={<MyProfilePage />} />
         <Route path="friend/:id" element={<FriendPage />} />
         <Route path="*" element={<ErrorPage />} />
         </Route>
