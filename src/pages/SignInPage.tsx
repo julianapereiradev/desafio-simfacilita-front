@@ -6,6 +6,8 @@ import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import logo from "../images/logo.png";
 import { LoginContext } from "../context/Context";
+import { AiOutlineEyeInvisible } from "react-icons/ai";
+import { AiOutlineEye } from "react-icons/ai";
 
 interface FormStates {
   email: string;
@@ -13,7 +15,6 @@ interface FormStates {
 }
 
 export default function SignInPage() {
-
   const loginContext = useContext(LoginContext);
 
   if (!loginContext) {
@@ -22,7 +23,7 @@ export default function SignInPage() {
   }
 
   const { setUserId } = loginContext;
-
+  const [showPassword, setShowPassword] = useState(false);
   const [formStates, setFormStates] = useState<FormStates>({
     email: "",
     password: "",
@@ -43,7 +44,7 @@ export default function SignInPage() {
       .then((res) => {
         navigate("/dashboard/timeline");
         setDisable(false);
-        setUserId(res.data.userId)
+        setUserId(res.data.userId);
         localStorage.setItem("userId", res.data.userId);
       })
       .catch((error) => {
@@ -76,17 +77,29 @@ export default function SignInPage() {
             disabled={disable}
           />
 
-          <input
-            id="password"
-            placeholder="Senha"
-            type="password"
-            autoComplete="new-password"
-            value={formStates.password}
-            onChange={(e) => handleChange(e)}
-            required
-            disabled={disable}
-          />
-
+          <DivPassword>
+            <input
+              id="password"
+              placeholder="Senha"
+              type={showPassword ? "text" : "password"}
+              autoComplete="password"
+              value={formStates.password}
+              onChange={(e) => handleChange(e)}
+              required
+              disabled={disable}
+            />
+            {showPassword ? (
+              <AiOutlineEye
+                onClick={() => setShowPassword(!showPassword)}
+                className="type-eye"
+              />
+            ) : (
+              <AiOutlineEyeInvisible
+                onClick={() => setShowPassword(!showPassword)}
+                className="type-eye"
+              />
+            )}
+          </DivPassword>
 
           <button type="submit" disabled={disable}>
             {disable ? (
@@ -95,7 +108,9 @@ export default function SignInPage() {
               "Login"
             )}
           </button>
-          <LinkToSignUp to="/signup">Não tem conta? Se inscreva aqui!</LinkToSignUp>
+          <LinkToSignUp to="/signup">
+            Não tem conta? Se inscreva aqui!
+          </LinkToSignUp>
         </RightBox>
       </form>
     </RightContainer>
@@ -118,7 +133,6 @@ const RightBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: normal;
- 
 
   @media (min-width: 1024px) {
     padding: 50px 370px 50px 370px;
@@ -202,5 +216,19 @@ const LinkToSignUp = styled(Link)`
 
   &:hover {
     color: #a85dc5;
+  }
+`;
+
+const DivPassword = styled.div`
+  position: relative;
+
+  .type-eye {
+    position: absolute;
+    top: 37%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: rgb(118, 118, 118);
+    font-size: 25px;
+    cursor: pointer;
   }
 `;

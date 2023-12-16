@@ -8,6 +8,8 @@ import dayjs from "dayjs";
 import logo from "../images/logo.png";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { AiOutlineEyeInvisible } from "react-icons/ai";
+import { AiOutlineEye } from "react-icons/ai";
 
 interface FormStates {
   name: string;
@@ -22,6 +24,7 @@ interface FormStates {
 export default function MyProfilePage() {
   const { id } = useParams();
 
+  const [showPassword, setShowPassword] = useState(false);
   const [formStates, setFormStates] = useState<FormStates>({
     name: "",
     lastName: "",
@@ -155,16 +158,29 @@ export default function MyProfilePage() {
             disabled={disable}
           />
 
-         <input
-            id="password"
-            placeholder="Senha"
-            type="password"
-            autoComplete="new-password"
-            value={formStates.password}
-            onChange={(e) => handleChange(e)}
-            required
-            disabled={disable}
-          />
+          <DivPassword>
+            <input
+              id="password"
+              placeholder="Senha"
+              type={showPassword ? "text" : "password"}
+              autoComplete="password"
+              value={formStates.password}
+              onChange={(e) => handleChange(e)}
+              required
+              disabled={disable}
+            />
+            {showPassword ? (
+              <AiOutlineEye
+                onClick={() => setShowPassword(!showPassword)}
+                className="type-eye"
+              />
+            ) : (
+              <AiOutlineEyeInvisible
+                onClick={() => setShowPassword(!showPassword)}
+                className="type-eye"
+              />
+            )}
+          </DivPassword>
        
 
           <input
@@ -289,5 +305,20 @@ const RightBox = styled.div`
       max-height: 55vw;
       font-size: 1.2vw;
     }
+  }
+`;
+
+
+const DivPassword = styled.div`
+  position: relative;
+
+  .type-eye {
+    position: absolute;
+    top: 37%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: rgb(118, 118, 118);
+    font-size: 25px;
+    cursor: pointer;
   }
 `;
