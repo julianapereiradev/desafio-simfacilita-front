@@ -41,7 +41,6 @@ const AuthorPost = styled.div`
   div {
     display: flex;
     flex-direction: column;
-    //background-color: green;
     margin-left: 20px;
     width: 100%;
     max-width: 100px;
@@ -67,7 +66,6 @@ const AuthorPost = styled.div`
   }
 
   h3 {
-    //background-color: pink;
     width: 100%;
   }
 `;

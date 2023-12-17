@@ -20,8 +20,7 @@ export default function SignInPage() {
   const loginContext = useContext(LoginContext);
 
   if (!loginContext) {
-    // Handle the case where the context is undefined
-    return null; // or display an error message, redirect, etc.
+    return null;
   }
 
   const { setUserId } = loginContext;
@@ -36,7 +35,6 @@ export default function SignInPage() {
   const navigate = useNavigate();
 
   const MySwal = withReactContent(Swal);
-
 
   function LoginError(error: any) {
     return (
@@ -120,13 +118,13 @@ export default function SignInPage() {
           </DivPassword>
 
           <button type="submit" disabled={disable}>
-          <LoadingButtonContent>
-            {disable ? (
-              <ThreeDots color="#ffffff" height={20} width={50} />
-            ) : (
-              "Login"
-            )}
-             </LoadingButtonContent>
+            <LoadingButtonContent>
+              {disable ? (
+                <ThreeDots color="#ffffff" height={20} width={50} />
+              ) : (
+                "Login"
+              )}
+            </LoadingButtonContent>
           </button>
           <LinkToSignUp to="/signup">
             Não tem conta? Se inscreva aqui!

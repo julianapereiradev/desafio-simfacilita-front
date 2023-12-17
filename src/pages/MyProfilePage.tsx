@@ -86,7 +86,7 @@ export default function MyProfilePage() {
     }
 
     axios
-      .put(API.putProfileId + id, newUser) //mudar aqui
+      .put(API.putProfileId + id, newUser)
       .then(() => {
         navigate("/dashboard/timeline");
         setDisable(false);
@@ -104,7 +104,6 @@ export default function MyProfilePage() {
   }
 
   function handleDeleteConfirm() {
-    // Realize a lógica de exclusão aqui
     axios
       .delete(API.deleteProfileId + id)
       .then(() => {
@@ -214,13 +213,13 @@ export default function MyProfilePage() {
           />
 
           <button type="submit" disabled={disable}>
-          <LoadingButtonContent>
-            {disable ? (
-              <ThreeDots color="#ffffff" height={20} width={50} />
-            ) : (
-              "Atualizar perfil"
-            )}
-             </LoadingButtonContent>
+            <LoadingButtonContent>
+              {disable ? (
+                <ThreeDots color="#ffffff" height={20} width={50} />
+              ) : (
+                "Atualizar perfil"
+              )}
+            </LoadingButtonContent>
           </button>
 
           <button
@@ -229,17 +228,17 @@ export default function MyProfilePage() {
             onClick={() => setShowDeleteModal(true)}
           >
             <LoadingButtonContent>
-            {disable ? (
-              <ThreeDots color="#ffffff" height={20} width={50} />
-            ) : (
-              "Deletar perfil"
-            )}
+              {disable ? (
+                <ThreeDots color="#ffffff" height={20} width={50} />
+              ) : (
+                "Deletar perfil"
+              )}
             </LoadingButtonContent>
           </button>
         </RightBox>
       </form>
 
-      {/* Modal de confirmação de exclusão */}
+      {/* Modal of exclude: */}
       {showDeleteModal && (
         <Modal
           isOpen={showDeleteModal}

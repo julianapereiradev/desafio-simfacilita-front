@@ -18,8 +18,7 @@ export default function UserPostsList({ postData }: { postData: PostType }) {
   const loginContext = useContext(LoginContext);
 
   if (!loginContext) {
-    // Handle the case where the context is undefined
-    return null; // or display an error message, redirect, etc.
+    return null;
   }
 
   const { userId, isLogged } = loginContext;
@@ -56,7 +55,7 @@ export default function UserPostsList({ postData }: { postData: PostType }) {
         timer: 5000,
         confirmButtonText: "OK",
       });
-      return; // Impede a execução do restante da função se o comentário for muito longo.
+      return;
     }
 
     const newUser = {
@@ -143,7 +142,6 @@ const AuthorPost = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 10px;
-
 
   img {
     width: 60px;

@@ -13,22 +13,18 @@ export default function App() {
   return (
     <PagesContainer>
       <BrowserRouter>
-      <LoginProvider>
-        <Routes>
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/" element={<SignInPage />} />
-        <Route path="/dashboard" element={        
-            <Dashboard />
-          }
-        >
-        <Route path="timeline" element={<TimelinePage />} />
-        <Route path="myprofile/:id" element={<MyProfilePage />} />
-        <Route path="friend/:id" element={<FriendPage />} />
-        <Route path="*" element={<ErrorPage />} />
-        </Route>
-
-        </Routes>
-    </LoginProvider>
+        <LoginProvider>
+          <Routes>
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/" element={<SignInPage />} />
+            <Route path="/dashboard" element={<Dashboard />}>
+              <Route path="timeline" element={<TimelinePage />} />
+              <Route path="myprofile/:id" element={<MyProfilePage />} />
+              <Route path="friend/:id" element={<FriendPage />} />
+              <Route path="*" element={<ErrorPage />} />
+            </Route>
+          </Routes>
+        </LoginProvider>
       </BrowserRouter>
     </PagesContainer>
   );

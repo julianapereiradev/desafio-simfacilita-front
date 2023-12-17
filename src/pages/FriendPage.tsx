@@ -16,8 +16,7 @@ export default function FriendPage() {
   const loginContext = useContext(LoginContext);
 
   if (!loginContext) {
-    // Handle the case where the context is undefined
-    return null; // or display an error message, redirect, etc.
+    return null;
   }
 
   const { userId, isLogged } = loginContext;
@@ -160,7 +159,6 @@ export default function FriendPage() {
 }
 
 const PostDiv = styled.div`
-
   @media (min-width: 1024px) {
     display: flex;
     flex-direction: column;

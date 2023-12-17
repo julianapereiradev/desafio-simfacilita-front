@@ -12,12 +12,10 @@ import { LoginContext } from "../context/Context";
 import MyPost from "../components/Timeline/MyPost";
 
 export default function TimelinePage() {
-
   const loginContext = useContext(LoginContext);
 
   if (!loginContext) {
-    // Handle the case where the context is undefined
-    return null; // or display an error message, redirect, etc.
+    return null;
   }
 
   const { userId, isLogged } = loginContext;
@@ -27,11 +25,9 @@ export default function TimelinePage() {
 
   const MySwal = withReactContent(Swal);
 
-
   useEffect(() => {
     isLogged();
-  },[])
-
+  }, []);
 
   function UsersDataError() {
     return <p>Não foi possível carregar os usuários!</p>;
@@ -41,10 +37,11 @@ export default function TimelinePage() {
     return <p>Não foi possível carregar todos os posts!</p>;
   }
 
-  console.log('ver userId em timeline:', userId)
+  console.log("ver userId em timeline:", userId);
 
   useEffect(() => {
-    axios.get(API.getUsers)
+    axios
+      .get(API.getUsers)
       .then((res) => {
         setUsersData(res.data);
       })
@@ -55,10 +52,11 @@ export default function TimelinePage() {
           timer: 5000,
           confirmButtonText: "OK",
         });
-        console.log('UsersDataError:', error)
+        console.log("UsersDataError:", error);
       });
 
-      axios.get(API.getAllPosts)
+    axios
+      .get(API.getAllPosts)
       .then((res) => {
         const reversedPosts = res.data.reverse();
         setPostsData(reversedPosts);
@@ -70,29 +68,31 @@ export default function TimelinePage() {
           timer: 5000,
           confirmButtonText: "OK",
         });
-        console.log('PostsDataError:', error)
+        console.log("PostsDataError:", error);
       });
   }, []);
 
   if (!usersData || !postsData) {
-    return <Loading />
+    return <Loading />;
   }
 
   return (
     <>
-    <RowUsers>
-    {usersData.map((item) => <UserList userData={item} />)}
-    </RowUsers>
+      <RowUsers>
+        {usersData.map((item) => (
+          <UserList userData={item} />
+        ))}
+      </RowUsers>
 
-    <PostDiv>
-    <MyPost />
-    </PostDiv>
+      <PostDiv>
+        <MyPost />
+      </PostDiv>
 
-
-    <PostDiv>
-      {postsData.map((item) => <PostList postData={item} /> )}
-    </PostDiv>
-
+      <PostDiv>
+        {postsData.map((item) => (
+          <PostList postData={item} />
+        ))}
+      </PostDiv>
     </>
   );
 }
@@ -106,10 +106,9 @@ const RowUsers = styled.div`
 `;
 
 const PostDiv = styled.div`
-
-@media (min-width: 1024px) {
-      display: flex;
-      flex-direction : column;
-      align-items: center
-    }
+  @media (min-width: 1024px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;

@@ -20,6 +20,6 @@ const GlobalStyle = createGlobalStyle`
         color: inherit;
         text-decoration: inherit;
     }
-`
+`;
 
-export default GlobalStyle
+export default GlobalStyle;
