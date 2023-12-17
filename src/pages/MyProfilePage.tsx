@@ -10,7 +10,6 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { AiOutlineEye } from "react-icons/ai";
-//import Modals from "../components/MyProfilePage/Modal";
 import Modal from "react-modal";
 
 interface FormStates {
@@ -215,11 +214,13 @@ export default function MyProfilePage() {
           />
 
           <button type="submit" disabled={disable}>
+          <LoadingButtonContent>
             {disable ? (
-              <ThreeDots color="#1F1712" height={20} width={50} />
+              <ThreeDots color="#ffffff" height={20} width={50} />
             ) : (
               "Atualizar perfil"
             )}
+             </LoadingButtonContent>
           </button>
 
           <button
@@ -227,11 +228,13 @@ export default function MyProfilePage() {
             disabled={disable}
             onClick={() => setShowDeleteModal(true)}
           >
+            <LoadingButtonContent>
             {disable ? (
-              <ThreeDots color="#1F1712" height={20} width={50} />
+              <ThreeDots color="#ffffff" height={20} width={50} />
             ) : (
               "Deletar perfil"
             )}
+            </LoadingButtonContent>
           </button>
         </RightBox>
       </form>
@@ -411,4 +414,10 @@ const DivModalText = styled.div`
       background-color: #9acb4b;
     }
   }
+`;
+
+const LoadingButtonContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

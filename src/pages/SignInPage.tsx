@@ -8,6 +8,8 @@ import logo from "../images/logo.png";
 import { LoginContext } from "../context/Context";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { AiOutlineEye } from "react-icons/ai";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 interface FormStates {
   email: string;
@@ -33,6 +35,17 @@ export default function SignInPage() {
 
   const navigate = useNavigate();
 
+  const MySwal = withReactContent(Swal);
+
+
+  function LoginError(error: any) {
+    return (
+      <p>
+        Não foi possível fazer o login pelo erro: {error.data.response.data}
+      </p>
+    );
+  }
+
   async function submitForm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -48,8 +61,13 @@ export default function SignInPage() {
         localStorage.setItem("userId", res.data.userId);
       })
       .catch((error) => {
-        alert(error.response.data);
         setDisable(false);
+        MySwal.fire({
+          title: "Oops... 😓",
+          html: <LoginError data={error} />,
+          timer: 5000,
+          confirmButtonText: "OK",
+        });
       });
   }
 
@@ -102,11 +120,13 @@ export default function SignInPage() {
           </DivPassword>
 
           <button type="submit" disabled={disable}>
+          <LoadingButtonContent>
             {disable ? (
-              <ThreeDots color="#1F1712" height={20} width={50} />
+              <ThreeDots color="#ffffff" height={20} width={50} />
             ) : (
               "Login"
             )}
+             </LoadingButtonContent>
           </button>
           <LinkToSignUp to="/signup">
             Não tem conta? Se inscreva aqui!
@@ -231,4 +251,10 @@ const DivPassword = styled.div`
     font-size: 25px;
     cursor: pointer;
   }
+`;
+
+const LoadingButtonContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

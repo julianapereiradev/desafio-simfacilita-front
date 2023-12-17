@@ -8,7 +8,8 @@ import dayjs from "dayjs";
 import logo from "../images/logo.png";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { AiOutlineEye } from "react-icons/ai";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 interface FormStates {
   name: string;
@@ -37,6 +38,16 @@ export default function SignUpPage() {
 
   const navigate = useNavigate();
 
+  const MySwal = withReactContent(Swal);
+
+  function RegisterError(error: any) {
+    return (
+      <p>
+        Não foi possível fazer o cadastro pelo erro: {error.data.response.data}
+      </p>
+    );
+  }
+
   async function submitForm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -51,8 +62,13 @@ export default function SignUpPage() {
         setDisable(false);
       })
       .catch((error) => {
-        alert(error.response.data);
         setDisable(false);
+        MySwal.fire({
+          title: "Oops... 😓",
+          html: <RegisterError data={error} />,
+          timer: 5000,
+          confirmButtonText: "OK",
+        });
       });
   }
 
@@ -158,11 +174,13 @@ export default function SignUpPage() {
           />
 
           <button type="submit" disabled={disable}>
-            {disable ? (
-              <ThreeDots color="#1F1712" height={20} width={50} />
-            ) : (
-              "Cadastrar"
-            )}
+            <LoadingButtonContent>
+              {disable ? (
+                <ThreeDots color="#ffffff" height={20} width={50} />
+              ) : (
+                "Cadastrar"
+              )}
+            </LoadingButtonContent>
           </button>
           <LinkToSignIn to="/">Já tem uma conta? Entre agora!</LinkToSignIn>
         </RightBox>
@@ -286,4 +304,10 @@ const DivPassword = styled.div`
     font-size: 25px;
     cursor: pointer;
   }
+`;
+
+const LoadingButtonContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

@@ -15,8 +15,7 @@ export default function MyPost() {
   const loginContext = useContext(LoginContext);
 
   if (!loginContext) {
-    // Handle the case where the context is undefined
-    return null; // or display an error message, redirect, etc.
+    return null;
   }
 
   const { userId, isLogged } = loginContext;
@@ -54,7 +53,7 @@ export default function MyPost() {
         confirmButtonText: "OK",
       });
       setDisable(false);
-      return; // Impede a execução do restante da função se o comentário for muito longo.
+      return;
     }
 
     const newUser = {
@@ -91,11 +90,13 @@ export default function MyPost() {
         </MessagePost>
         <ButtonPost>
           <button type="submit" disabled={disable}>
+          <LoadingButtonContent>
             {disable ? (
-              <ThreeDots color="#1F1712" height={20} width={50} />
+              <ThreeDots color="#7f3e98" height={20} width={50} />
             ) : (
               "POSTAR"
             )}
+             </LoadingButtonContent>
           </button>
         </ButtonPost>
       </form>
@@ -155,4 +156,10 @@ const ButtonPost = styled.div`
     background-color: #9acb4b;
   }
   }
+`;
+
+const LoadingButtonContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
