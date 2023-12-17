@@ -106,7 +106,9 @@ export default function MyPost() {
 const ContainerPost = styled.div`
   margin: 6px 0px 70px 0px;
   padding: 10px;
-  border: 1px solid black;
+  background-color: #7f3e98;
+  border-radius: 10px;
+  border: none;
 
   @media (min-width: 1024px) {
     width: 100%;
@@ -116,6 +118,8 @@ const ContainerPost = styled.div`
 
   h1 {
     margin-top: 10px;
+    color: #FFFFFF;
+    font-size: 20px;
   }
 `;
 
@@ -126,19 +130,29 @@ const MessagePost = styled.div`
     width: 100%;
     height: 100%;
     min-height: 100px;
-    border: 1px solid black;
+    border: none;
+    border-radius: 10px;
     padding: 10px;
+    outline: none
   }
 `;
 
 const ButtonPost = styled.div`
   display: flex;
-  justify-content: flex-end;  // Alinha os filhos ao final do container (canto direito)
+  justify-content: flex-end;
 
   button {
-    background-color: #7f3e98;
+    background-color: #e5e5e5;
     border: none;
-    color: #FFFFFF;
+    color: #7f3e98;
+    font-weight: 600;
     font-size: 16px;
+    border-radius: 10px;
+    height: 40px;
+
+    &:hover {
+    color: #a85dc5;
+    background-color: #9acb4b;
+  }
   }
 `;

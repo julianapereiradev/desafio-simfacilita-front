@@ -25,10 +25,12 @@ export default function CommentList({
 }
 
 const CommentContainer = styled.div`
-  //background-color: blue;
+  background-color: #ffffff;
   margin-bottom: 10px;
   padding: 10px;
-  border: 1px solid red;
+  border-radius: 10px;
+  background-color: #ffffff;
+  border: 1px solid #d4d0d0;
 `;
 
 const AuthorPost = styled.div`
@@ -56,11 +58,12 @@ const AuthorPost = styled.div`
 
   h1 {
     font-size: 12px;
+    font-weight: 500;
   }
 
   h2 {
     margin-top: 5px;
-    font-size: 10px;
+    font-size: 9px;
   }
 
   h3 {

@@ -11,7 +11,6 @@ import PostList from "../components/Timeline/PostList";
 import { LoginContext } from "../context/Context";
 import MyPost from "../components/Timeline/MyPost";
 
-
 export default function TimelinePage() {
 
   const loginContext = useContext(LoginContext);
@@ -81,7 +80,6 @@ export default function TimelinePage() {
 
   return (
     <>
-    {/* TODOS OS USERS */}
     <RowUsers>
     {usersData.map((item) => <UserList userData={item} />)}
     </RowUsers>
@@ -91,7 +89,6 @@ export default function TimelinePage() {
     </PostDiv>
 
 
-    {/* TODOS OS POSTS */}
     <PostDiv>
       {postsData.map((item) => <PostList postData={item} /> )}
     </PostDiv>

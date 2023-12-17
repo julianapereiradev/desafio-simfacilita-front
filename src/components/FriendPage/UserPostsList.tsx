@@ -127,6 +127,9 @@ const ContainerPost = styled.div`
   margin: 6px 0px;
   padding: 10px;
   border: 1px solid black;
+  background-color: #e5e5e5;
+  border-radius: 10px;
+  border: none;
 
   @media (min-width: 1024px) {
     width: 100%;
@@ -141,6 +144,7 @@ const AuthorPost = styled.div`
   align-items: center;
   gap: 10px;
 
+
   img {
     width: 60px;
     height: 60px;
@@ -154,9 +158,15 @@ const AuthorPost = styled.div`
     flex-direction: column;
   }
 
+  h1 {
+    color: #000000;
+    font-weight: 500;
+  }
+
   h2 {
     margin-top: 5px;
     font-size: 10px;
+    color: #000000;
   }
 `;
 
@@ -167,14 +177,16 @@ const MessagePost = styled.div`
     width: 100%;
     height: 100%;
     min-height: 100px;
-    border: 1px solid black;
+    border: none;
+    border-radius: 10px;
+    background-color: #ffffff;
     padding: 10px;
   }
 `;
 
 const ButtonPost = styled.div`
   button {
-    background-color: #ffffff;
+    background-color: #e5e5e5;
     border: none;
   }
 `;
@@ -182,13 +194,20 @@ const ButtonPost = styled.div`
 const FaCommentIcon = styled(FaComment)`
   width: 25px;
   height: 25px;
-  color: #7f3e98;
+  color: #9acb4b;
+
+  &:hover {
+    color: #7f3e98;
+  }
 `;
 
 const FormNewComment = styled.form`
   input {
-    //background-color: red;
     width: 90%;
     height: 40px;
+    border: none;
+    border-radius: 10px;
+    padding-left: 10px;
+    outline: none;
   }
 `;

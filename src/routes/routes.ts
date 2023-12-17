@@ -11,5 +11,6 @@ export const API = {
     followOrUnfollow: API_URL + '/follow/',
     getFollowers: API_URL + '/followers/',
     getProfileId: API_URL + '/user/',
-    putProfileId: API_URL + '/user/'
+    putProfileId: API_URL + '/user/',
+    deleteProfileId: API_URL + '/user/'
 }

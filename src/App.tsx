@@ -7,8 +7,7 @@ import SignInPage from "./pages/SignInPage";
 import Dashboard from "./pages/Dashboard";
 import MyProfilePage from "./pages/MyProfilePage";
 import FriendPage from "./pages/FriendPage";
-import { LoginContext, LoginProvider } from "./context/Context";
-import { useContext } from "react";
+import { LoginProvider } from "./context/Context";
 
 export default function App() {
   return (

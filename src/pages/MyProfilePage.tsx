@@ -10,6 +10,8 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { AiOutlineEye } from "react-icons/ai";
+//import Modals from "../components/MyProfilePage/Modal";
+import Modal from "react-modal";
 
 interface FormStates {
   name: string;
@@ -25,6 +27,7 @@ export default function MyProfilePage() {
   const { id } = useParams();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [formStates, setFormStates] = useState<FormStates>({
     name: "",
     lastName: "",
@@ -41,10 +44,9 @@ export default function MyProfilePage() {
 
   const MySwal = withReactContent(Swal);
 
-    function MyProfileDataError() {
+  function MyProfileDataError() {
     return <p>Não foi possível carregar toda as informações!</p>;
   }
-
 
   useEffect(() => {
     axios
@@ -54,7 +56,7 @@ export default function MyProfilePage() {
         setFormStates({
           name: userData.name,
           lastName: userData.lastName,
-          birthday: dayjs(userData.birthday).format('YYYY-MM-DD'),
+          birthday: dayjs(userData.birthday).format("YYYY-MM-DD"),
           phone: userData.phone,
           email: userData.email,
           password: userData.password,
@@ -79,6 +81,11 @@ export default function MyProfilePage() {
     newUser.birthday = dayjs(newUser.birthday).endOf("day").toISOString();
     setDisable(true);
 
+    if (showDeleteModal) {
+      setShowDeleteModal(true);
+      return;
+    }
+
     axios
       .put(API.putProfileId + id, newUser) //mudar aqui
       .then(() => {
@@ -95,6 +102,20 @@ export default function MyProfilePage() {
     const newFormStates = { ...formStates };
     newFormStates[e.target.id as keyof FormStates] = e.target.value;
     setFormStates(newFormStates);
+  }
+
+  function handleDeleteConfirm() {
+    // Realize a lógica de exclusão aqui
+    axios
+      .delete(API.deleteProfileId + id)
+      .then(() => {
+        navigate("/");
+        setDisable(false);
+      })
+      .catch((error) => {
+        alert(error.response.data);
+        setDisable(false);
+      });
   }
 
   return (
@@ -181,7 +202,6 @@ export default function MyProfilePage() {
               />
             )}
           </DivPassword>
-       
 
           <input
             id="profileUrl"
@@ -202,16 +222,59 @@ export default function MyProfilePage() {
             )}
           </button>
 
-          <button type="submit" disabled={disable}>
+          <button
+            className="delete"
+            disabled={disable}
+            onClick={() => setShowDeleteModal(true)}
+          >
             {disable ? (
               <ThreeDots color="#1F1712" height={20} width={50} />
             ) : (
               "Deletar perfil"
             )}
           </button>
-
         </RightBox>
       </form>
+
+      {/* Modal de confirmação de exclusão */}
+      {showDeleteModal && (
+        <Modal
+          isOpen={showDeleteModal}
+          onRequestClose={() => {
+            setShowDeleteModal(false);
+            setDisable(false);
+          }}
+          contentLabel="Confirmar exclusão"
+          style={{
+            overlay: {
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+            },
+            content: {
+              width: "50%",
+              height: "50%",
+              margin: "auto",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: "10px",
+            },
+          }}
+        >
+          <DivParagraph>Tem certeza que deseja deletar o perfil?</DivParagraph>
+          <DivModalText>
+            <button onClick={handleDeleteConfirm}>Sim</button>
+            <button
+              onClick={() => {
+                setShowDeleteModal(false);
+                setDisable(false);
+              }}
+            >
+              Cancelar
+            </button>
+          </DivModalText>
+        </Modal>
+      )}
     </RightContainer>
   );
 }
@@ -233,6 +296,10 @@ const RightBox = styled.div`
   flex-direction: column;
   align-items: normal;
   padding: 0px 60px 0px 60px;
+
+  .delete {
+    background-color: #ec3f3f;
+  }
 
   @media (min-width: 1024px) {
     padding: 15px 370px 15px 370px;
@@ -308,7 +375,6 @@ const RightBox = styled.div`
   }
 `;
 
-
 const DivPassword = styled.div`
   position: relative;
 
@@ -320,5 +386,29 @@ const DivPassword = styled.div`
     color: rgb(118, 118, 118);
     font-size: 25px;
     cursor: pointer;
+  }
+`;
+
+const DivParagraph = styled.div`
+  font-family: "Poppins", sans-serif;
+`;
+
+const DivModalText = styled.div`
+  margin-top: 20px;
+
+  button {
+    margin-left: 10px;
+    background-color: #7f3e98;
+    border: none;
+    color: #ffffff;
+    border-radius: 10px;
+    height: 30px;
+    width: 80px;
+    font-weight: 500;
+
+    &:hover {
+      color: #a85dc5;
+      background-color: #9acb4b;
+    }
   }
 `;
