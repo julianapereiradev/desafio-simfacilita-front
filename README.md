@@ -1,7 +1,7 @@
 # SIM Facilita - Rede Social
 
 ## 1. Seção Inicial
-Bem-vindo ao projeto de rede social simples da SIM Facilita. Confira a [demo aqui](link_da_demo) e veja o projeto em ação no gif abaixo:
+Bem-vindo ao projeto de rede social simples da SIM Facilita. Confira o  [deploy do projeto aqui](https://desafio-simfacilita-front.vercel.app/) e veja o projeto em ação no gif abaixo:
 
 ![GIF do Projeto](link_do_gif)
 
