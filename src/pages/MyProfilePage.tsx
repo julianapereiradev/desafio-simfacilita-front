@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { API, headersAuth } from "../routes/routes";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
@@ -21,7 +21,6 @@ interface FormStates {
 }
 
 export default function MyProfilePage() {
-  const { id } = useParams();
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [formStates, setFormStates] = useState<FormStates>({
@@ -376,19 +375,6 @@ const RightBox = styled.div`
   }
 `;
 
-const DivPassword = styled.div`
-  position: relative;
-
-  .type-eye {
-    position: absolute;
-    top: 37%;
-    right: 10px;
-    transform: translateY(-50%);
-    color: rgb(118, 118, 118);
-    font-size: 25px;
-    cursor: pointer;
-  }
-`;
 
 const DivParagraph = styled.div`
   font-family: "Poppins", sans-serif;

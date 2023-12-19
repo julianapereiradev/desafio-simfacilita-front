@@ -20,7 +20,7 @@ export default function FriendPage() {
     return null;
   }
 
-  const { userId, isLogged } = loginContext;
+  const { isLogged } = loginContext;
 
   const [userPostsData, setUserPostsData] = useState<PostUserType[]>([]);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -98,8 +98,8 @@ export default function FriendPage() {
       const isAlreadyFollowing = followers.some(
         (item: { followerId: number }) => {
           console.log('ITEM AQUII',item.followerId);
+          console.log("userIdLogged", userIdLogged)
           const localstorageUser = localStorage.getItem("userId")
-          console.log("LOCALSTORAGE USER ID")
           item.followerId === Number(localstorageUser)
         }
       );
