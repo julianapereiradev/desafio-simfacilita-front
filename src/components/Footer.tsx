@@ -14,7 +14,7 @@ export default function Footer() {
     return null;
   }
 
-  const { userId } = loginContext;
+
   const navigate = useNavigate();
 
   function logout() {
@@ -31,6 +31,7 @@ export default function Footer() {
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.removeItem("userId");
+        localStorage.removeItem("token")
         navigate("/");
       }
     });
@@ -41,7 +42,7 @@ export default function Footer() {
       <Links to="timeline">
         <FaHomeIcon />
       </Links>
-      <Links to={`myprofile/${userId}`}>
+      <Links to={`myprofile`}>
         <FaUserIcon />
       </Links>
       <div onClick={logout}>

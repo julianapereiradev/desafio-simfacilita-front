@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { LoginContext } from "../context/Context";
 import { PostUserType } from "../interfaces/interfaces";
 import axios from "axios";
-import { API } from "../routes/routes";
+import { API, headersAuth } from "../routes/routes";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Loading from "../components/Loading";
@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 export default function FriendPage() {
   const { id } = useParams();
   const loginContext = useContext(LoginContext);
+
 
   if (!loginContext) {
     return null;
@@ -27,11 +28,19 @@ export default function FriendPage() {
   const [lastName, setLastName] = useState("");
   const [birthday, setBirthday] = useState("");
   const [profileUrl, setProfileUrle] = useState("");
+  const [userIdLogged, setUserIdLogged] = useState("");
 
   const MySwal = withReactContent(Swal);
 
   useEffect(() => {
     isLogged();
+
+   let banana = localStorage.getItem("userId")
+   console.log("banana", banana)
+   if(banana) {
+    setUserIdLogged(banana)
+   }
+
   }, []);
 
   function UserPostsDataError() {
@@ -46,7 +55,7 @@ export default function FriendPage() {
 
   useEffect(() => {
     axios
-      .get(API.getAllUserPosts + id)
+      .get(API.getAllUserPosts + id, headersAuth())
       .then((res) => {
         const reversedPosts = res.data.reverse();
         setUserPostsData(reversedPosts);
@@ -62,7 +71,7 @@ export default function FriendPage() {
       });
 
     axios
-      .get(API.getProfileId + id)
+      .get(API.getOtherUsersProfileById + id, headersAuth())
       .then((res) => {
         setName(res.data.name),
           setLastName(res.data.lastName),
@@ -84,11 +93,15 @@ export default function FriendPage() {
 
   const checkIfFollowing = async () => {
     try {
-      const response = await axios.get(API.getFollowers + id);
+      const response = await axios.get(API.getFollowers + id, headersAuth());
       const followers = response.data;
-
       const isAlreadyFollowing = followers.some(
-        (item: { followerId: number }) => item.followerId === Number(userId)
+        (item: { followerId: number }) => {
+          console.log('ITEM AQUII',item.followerId);
+          const localstorageUser = localStorage.getItem("userId")
+          console.log("LOCALSTORAGE USER ID")
+          item.followerId === Number(localstorageUser)
+        }
       );
 
       setIsFollowing(isAlreadyFollowing);
@@ -99,17 +112,7 @@ export default function FriendPage() {
 
   const handleFollowToggle = async () => {
     try {
-      if (isFollowing) {
-        const newUser = {
-          followerId: Number(userId),
-        };
-        await axios.post(API.followOrUnfollow + id, newUser);
-      } else {
-        const newUser = {
-          followerId: Number(userId),
-        };
-        await axios.post(API.followOrUnfollow + id, newUser);
-      }
+        await axios.post(API.followOrUnfollow + id, null,headersAuth());
       setIsFollowing(!isFollowing);
     } catch (error) {
       console.error("Erro ao realizar ação de seguir/deseguir", error);
@@ -131,13 +134,11 @@ export default function FriendPage() {
             <h1>{name}</h1>
             <h1>{lastName}</h1>
             <h2>{formattedDate}</h2>
-            {id === userId ? (
-              ""
-            ) : (
+           
               <button onClick={handleFollowToggle}>
                 {isFollowing ? "SEGUINDO" : "SEGUIR"}
               </button>
-            )}
+          
           </div>
         </ContainerInfo>
       </ProfileInfoDiv>

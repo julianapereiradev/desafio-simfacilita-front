@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, ChangeEvent, FormEvent, useContext, useEffect } from "react";
 import axios from "axios";
-import { API } from "../../routes/routes";
+import { API, headersAuth } from "../../routes/routes";
 import { LoginContext } from "../../context/Context";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -18,7 +18,7 @@ export default function MyPost() {
     return null;
   }
 
-  const { userId, isLogged } = loginContext;
+  const { isLogged } = loginContext;
 
   const [disable, setDisable] = useState(false);
   const [formState, setFormState] = useState({
@@ -58,11 +58,10 @@ export default function MyPost() {
 
     const newUser = {
       ...formState,
-      userId: Number(userId),
     };
 
     axios
-      .post(API.createPost, newUser)
+      .post(API.createPost, newUser, headersAuth())
       .then(() => {
         window.location.reload();
         setDisable(false);

@@ -1,16 +1,15 @@
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { API } from "../routes/routes";
+import { API, headersAuth } from "../routes/routes";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import dayjs from "dayjs";
 import logo from "../images/logo.png";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { AiOutlineEyeInvisible } from "react-icons/ai";
-import { AiOutlineEye } from "react-icons/ai";
 import Modal from "react-modal";
+import ModalPage from "../components/MyProfilePage/ModalPage";
 
 interface FormStates {
   name: string;
@@ -18,14 +17,12 @@ interface FormStates {
   birthday: string;
   phone: string;
   email: string;
-  password: string;
   profileUrl: string;
 }
 
 export default function MyProfilePage() {
   const { id } = useParams();
 
-  const [showPassword, setShowPassword] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [formStates, setFormStates] = useState<FormStates>({
     name: "",
@@ -33,11 +30,11 @@ export default function MyProfilePage() {
     birthday: "",
     phone: "",
     email: "",
-    password: "",
     profileUrl: "",
   });
 
   const [disable, setDisable] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -49,7 +46,7 @@ export default function MyProfilePage() {
 
   useEffect(() => {
     axios
-      .get(API.getProfileId + id)
+      .get(API.getProfileId, headersAuth())
       .then((res) => {
         const userData = res.data;
         setFormStates({
@@ -58,7 +55,6 @@ export default function MyProfilePage() {
           birthday: dayjs(userData.birthday).format("YYYY-MM-DD"),
           phone: userData.phone,
           email: userData.email,
-          password: userData.password,
           profileUrl: userData.profileUrl,
         });
       })
@@ -86,7 +82,7 @@ export default function MyProfilePage() {
     }
 
     axios
-      .put(API.putProfileId + id, newUser)
+      .put(API.putProfileId, newUser, headersAuth())
       .then(() => {
         navigate("/dashboard/timeline");
         setDisable(false);
@@ -103,9 +99,13 @@ export default function MyProfilePage() {
     setFormStates(newFormStates);
   }
 
+function openModal() {
+ setShowPasswordModal(true)
+}
+
   function handleDeleteConfirm() {
     axios
-      .delete(API.deleteProfileId + id)
+      .delete(API.deleteProfileId, headersAuth())
       .then(() => {
         navigate("/");
         setDisable(false);
@@ -177,30 +177,6 @@ export default function MyProfilePage() {
             disabled={disable}
           />
 
-          <DivPassword>
-            <input
-              id="password"
-              placeholder="Senha"
-              type={showPassword ? "text" : "password"}
-              autoComplete="password"
-              value={formStates.password}
-              onChange={(e) => handleChange(e)}
-              required
-              disabled={disable}
-            />
-            {showPassword ? (
-              <AiOutlineEye
-                onClick={() => setShowPassword(!showPassword)}
-                className="type-eye"
-              />
-            ) : (
-              <AiOutlineEyeInvisible
-                onClick={() => setShowPassword(!showPassword)}
-                className="type-eye"
-              />
-            )}
-          </DivPassword>
-
           <input
             id="profileUrl"
             placeholder="Foto URL"
@@ -212,6 +188,7 @@ export default function MyProfilePage() {
             disabled={disable}
           />
 
+        
           <button type="submit" disabled={disable}>
             <LoadingButtonContent>
               {disable ? (
@@ -221,6 +198,24 @@ export default function MyProfilePage() {
               )}
             </LoadingButtonContent>
           </button>
+        </RightBox>
+      </form>
+
+      <button
+            className="change-password"
+            onClick={() => openModal()}
+          >
+            <LoadingButtonContent>
+              {disable ? (
+                <ThreeDots color="#ffffff" height={20} width={50} />
+              ) : (
+                "Mudar senha"
+              )}
+            </LoadingButtonContent>
+          </button>
+
+          <ModalPage showPasswordModal={showPasswordModal} setShowPasswordModal={setShowPasswordModal }/>
+
 
           <button
             className="delete"
@@ -235,8 +230,6 @@ export default function MyProfilePage() {
               )}
             </LoadingButtonContent>
           </button>
-        </RightBox>
-      </form>
 
       {/* Modal of exclude: */}
       {showDeleteModal && (
@@ -277,6 +270,7 @@ export default function MyProfilePage() {
           </DivModalText>
         </Modal>
       )}
+    
     </RightContainer>
   );
 }
@@ -302,6 +296,11 @@ const RightBox = styled.div`
   .delete {
     background-color: #ec3f3f;
   }
+
+  .change-password {
+    background-color: #757070;
+  }
+
 
   @media (min-width: 1024px) {
     padding: 15px 370px 15px 370px;

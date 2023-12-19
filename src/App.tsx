@@ -19,7 +19,7 @@ export default function App() {
             <Route path="/" element={<SignInPage />} />
             <Route path="/dashboard" element={<Dashboard />}>
               <Route path="timeline" element={<TimelinePage />} />
-              <Route path="myprofile/:id" element={<MyProfilePage />} />
+              <Route path="myprofile" element={<MyProfilePage />} />
               <Route path="friend/:id" element={<FriendPage />} />
               <Route path="*" element={<ErrorPage />} />
             </Route>

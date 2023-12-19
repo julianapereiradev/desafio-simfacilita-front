@@ -23,7 +23,6 @@ export default function SignInPage() {
     return null;
   }
 
-  const { setUserId } = loginContext;
   const [showPassword, setShowPassword] = useState(false);
   const [formStates, setFormStates] = useState<FormStates>({
     email: "",
@@ -55,7 +54,7 @@ export default function SignInPage() {
       .then((res) => {
         navigate("/dashboard/timeline");
         setDisable(false);
-        setUserId(res.data.userId);
+        localStorage.setItem("token", res.data.token);
         localStorage.setItem("userId", res.data.userId);
       })
       .catch((error) => {

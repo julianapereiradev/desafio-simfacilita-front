@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { useState, ChangeEvent, FormEvent, useContext, useEffect } from "react";
 import CommentList from "../Timeline/CommentList";
 import axios from "axios";
-import { API } from "../../routes/routes";
+import { API, headersAuth } from "../../routes/routes";
 import { LoginContext } from "../../context/Context";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -21,7 +21,7 @@ export default function UserPostsList({ postData }: { postData: PostType }) {
     return null;
   }
 
-  const { userId, isLogged } = loginContext;
+  const {isLogged } = loginContext;
 
   const formattedDate = dayjs(postData.createdAt).format("DD-MM-YYYY");
   const [clickComment, setClickComment] = useState(false);
@@ -60,12 +60,11 @@ export default function UserPostsList({ postData }: { postData: PostType }) {
 
     const newUser = {
       ...formState,
-      userId: Number(userId),
       postId: postData.id,
     };
 
     axios
-      .post(API.postComment, newUser)
+      .post(API.postComment, newUser, headersAuth())
       .then(() => {
         window.location.reload();
       })

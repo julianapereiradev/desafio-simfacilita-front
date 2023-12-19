@@ -2,9 +2,11 @@ import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface LoginContextProps {
-  userId: string;
-  setUserId: (id: string) => void;
   isLogged: () => void;
+  token: string, 
+  setToken: (token: string) => void;
+  userId: string,
+  setUserId: (id: string ) => void;
 }
 
 export const LoginContext = createContext<LoginContextProps | undefined>(
@@ -13,20 +15,26 @@ export const LoginContext = createContext<LoginContextProps | undefined>(
 
 export function LoginProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
+  const [token, setToken] = useState("");
   const [userId, setUserId] = useState("");
 
   const isLogged = () => {
-    let userId = localStorage.getItem("userId");
+    let token = localStorage.getItem("token");
+    let userId = localStorage.getItem("userId")
 
-    if (userId) {
-      setUserId(userId);
+    if(userId) {
+      setUserId(userId)
+    }
+    
+    if (token) {
+      setToken(token);
     } else {
       navigate("/");
     }
   };
 
   return (
-    <LoginContext.Provider value={{ isLogged, userId, setUserId }}>
+    <LoginContext.Provider value={{ isLogged, token, setToken, userId, setUserId}}>
       {children}
     </LoginContext.Provider>
   );

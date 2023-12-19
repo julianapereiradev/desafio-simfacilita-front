@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { API } from "../routes/routes";
+import { API, headersAuth } from "../routes/routes";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Loading from "../components/Loading";
@@ -18,7 +18,7 @@ export default function TimelinePage() {
     return null;
   }
 
-  const { userId, isLogged } = loginContext;
+  const { isLogged } = loginContext;
 
   const [usersData, setUsersData] = useState<UserType[]>([]);
   const [postsData, setPostsData] = useState<PostType[]>([]);
@@ -37,11 +37,9 @@ export default function TimelinePage() {
     return <p>Não foi possível carregar todos os posts!</p>;
   }
 
-  console.log("ver userId em timeline:", userId);
-
   useEffect(() => {
     axios
-      .get(API.getUsers)
+      .get(API.getUsers, headersAuth())
       .then((res) => {
         setUsersData(res.data);
       })
@@ -56,7 +54,7 @@ export default function TimelinePage() {
       });
 
     axios
-      .get(API.getAllPosts)
+      .get(API.getAllPosts, headersAuth())
       .then((res) => {
         const reversedPosts = res.data.reverse();
         setPostsData(reversedPosts);
