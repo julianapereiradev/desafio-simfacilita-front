@@ -31,7 +31,11 @@ export default function ModalPage({
     };
 
     axios
-      .put(`${API.updatePassword}/update-password`, updatePassword, headersAuth())
+      .put(
+        `${API.updatePassword}/update-password`,
+        updatePassword,
+        headersAuth()
+      )
       .then((res) => {
         console.log("res:", res);
         setShowPasswordModal(false);
@@ -65,6 +69,8 @@ export default function ModalPage({
         },
       }}
     >
+      <DivParagraph>Tem certeza que deseja deletar o perfil?</DivParagraph>
+      <DivInputs>
       <form onSubmit={(e) => submitForm(e)}>
         <input
           id="password"
@@ -93,8 +99,8 @@ export default function ModalPage({
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
-        <DivModalText>
-          <button onClick={() => ""}>Sim</button>
+<DivButtons>
+<button onClick={() => ""}>Sim</button>
           <button
             onClick={() => {
               setShowPasswordModal(false);
@@ -102,14 +108,51 @@ export default function ModalPage({
           >
             Cancelar
           </button>
-        </DivModalText>
+</DivButtons>
+
+ 
       </form>
+      </DivInputs>
+      
     </Modal>
   );
 }
 
-const DivModalText = styled.div`
-  margin-top: 20px;
+const DivParagraph = styled.div`
+  font-family: "Poppins", sans-serif;
+  margin-bottom: 20px;
+`;
+
+const DivInputs = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (min-width: 1024px) {
+      padding: 0px 80px;
+    }
+
+  input {
+    margin-bottom: 20px;
+    width: 100%;
+    font-size: 3vw;
+    border: 1px solid #7f3e98;
+    border-radius: 15px;
+    padding-left: 6px;
+    color: rgb(118, 118, 118);
+    outline: 0;
+
+    @media (min-width: 1024px) {
+      font-size: 1.2vw;
+    }
+  }
+
+`
+
+const DivButtons = styled.div`
+ display: flex;
+ flex-direction: row;
+ justify-content: center;
 
   button {
     margin-left: 10px;

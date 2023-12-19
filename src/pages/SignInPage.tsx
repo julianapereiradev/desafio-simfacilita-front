@@ -35,10 +35,10 @@ export default function SignInPage() {
 
   const MySwal = withReactContent(Swal);
 
-  function LoginError(error: any) {
+  function LoginError() {
     return (
       <p>
-        Não foi possível fazer o login pelo erro: {error.data.response.data}
+        Não foi possível fazer o login pelo erro. Email e/ou senha errados
       </p>
     );
   }
@@ -57,11 +57,11 @@ export default function SignInPage() {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("userId", res.data.userId);
       })
-      .catch((error) => {
+      .catch(() => {
         setDisable(false);
         MySwal.fire({
           title: "Oops... 😓",
-          html: <LoginError data={error} />,
+          html: <LoginError />,
           timer: 5000,
           confirmButtonText: "OK",
         });

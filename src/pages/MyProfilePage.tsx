@@ -21,7 +21,6 @@ interface FormStates {
 }
 
 export default function MyProfilePage() {
-
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [formStates, setFormStates] = useState<FormStates>({
     name: "",
@@ -98,9 +97,9 @@ export default function MyProfilePage() {
     setFormStates(newFormStates);
   }
 
-function openModal() {
- setShowPasswordModal(true)
-}
+  function openModal() {
+    setShowPasswordModal(true);
+  }
 
   function handleDeleteConfirm() {
     axios
@@ -187,7 +186,6 @@ function openModal() {
             disabled={disable}
           />
 
-        
           <button type="submit" disabled={disable}>
             <LoadingButtonContent>
               {disable ? (
@@ -200,76 +198,78 @@ function openModal() {
         </RightBox>
       </form>
 
-      <button
-            className="change-password"
-            onClick={() => openModal()}
-          >
-            <LoadingButtonContent>
-              {disable ? (
-                <ThreeDots color="#ffffff" height={20} width={50} />
-              ) : (
-                "Mudar senha"
-              )}
-            </LoadingButtonContent>
-          </button>
+      <OtherActions>
+        <button className="change-password" onClick={() => openModal()}>
+          <LoadingButtonContent>
+            {disable ? (
+              <ThreeDots color="#ffffff" height={20} width={50} />
+            ) : (
+              "Mudar senha"
+            )}
+          </LoadingButtonContent>
+        </button>
 
-          <ModalPage showPasswordModal={showPasswordModal} setShowPasswordModal={setShowPasswordModal }/>
+        <ModalPage
+          showPasswordModal={showPasswordModal}
+          setShowPasswordModal={setShowPasswordModal}
+        />
 
-
-          <button
-            className="delete"
-            disabled={disable}
-            onClick={() => setShowDeleteModal(true)}
-          >
-            <LoadingButtonContent>
-              {disable ? (
-                <ThreeDots color="#ffffff" height={20} width={50} />
-              ) : (
-                "Deletar perfil"
-              )}
-            </LoadingButtonContent>
-          </button>
-
-      {/* Modal of exclude: */}
-      {showDeleteModal && (
-        <Modal
-          isOpen={showDeleteModal}
-          onRequestClose={() => {
-            setShowDeleteModal(false);
-            setDisable(false);
-          }}
-          contentLabel="Confirmar exclusão"
-          style={{
-            overlay: {
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
-            },
-            content: {
-              width: "50%",
-              height: "50%",
-              margin: "auto",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: "10px",
-            },
-          }}
+        <button
+          className="delete"
+          disabled={disable}
+          onClick={() => setShowDeleteModal(true)}
         >
-          <DivParagraph>Tem certeza que deseja deletar o perfil?</DivParagraph>
-          <DivModalText>
-            <button onClick={handleDeleteConfirm}>Sim</button>
-            <button
-              onClick={() => {
-                setShowDeleteModal(false);
-                setDisable(false);
-              }}
-            >
-              Cancelar
-            </button>
-          </DivModalText>
-        </Modal>
-      )}
-    
+          <LoadingButtonContent>
+            {disable ? (
+              <ThreeDots color="#ffffff" height={20} width={50} />
+            ) : (
+              "Deletar perfil"
+            )}
+          </LoadingButtonContent>
+        </button>
+
+        {/* Modal of exclude: */}
+        {showDeleteModal && (
+          <Modal
+            isOpen={showDeleteModal}
+            onRequestClose={() => {
+              setShowDeleteModal(false);
+              setDisable(false);
+            }}
+            contentLabel="Confirmar exclusão"
+            style={{
+              overlay: {
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+              },
+              content: {
+                width: "50%",
+                height: "50%",
+                margin: "auto",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "10px",
+              },
+            }}
+          >
+            <DivParagraph>
+              Tem certeza que deseja deletar o perfil?
+            </DivParagraph>
+            <DivModalText>
+              <button onClick={handleDeleteConfirm}>Sim</button>
+              <button
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setDisable(false);
+                }}
+              >
+                Cancelar
+              </button>
+            </DivModalText>
+          </Modal>
+        )}
+      </OtherActions>
     </RightContainer>
   );
 }
@@ -280,6 +280,7 @@ const RightContainer = styled.div`
   background-color: #ffffff;
   padding: 5px 20px 5px 20px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 `;
@@ -291,15 +292,6 @@ const RightBox = styled.div`
   flex-direction: column;
   align-items: normal;
   padding: 0px 60px 0px 60px;
-
-  .delete {
-    background-color: #ec3f3f;
-  }
-
-  .change-password {
-    background-color: #757070;
-  }
-
 
   @media (min-width: 1024px) {
     padding: 15px 370px 15px 370px;
@@ -371,10 +363,10 @@ const RightBox = styled.div`
       min-height: 40px;
       max-height: 55vw;
       font-size: 1.2vw;
+      margin-bottom: 0px;
     }
   }
 `;
-
 
 const DivParagraph = styled.div`
   font-family: "Poppins", sans-serif;
@@ -404,4 +396,66 @@ const LoadingButtonContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const OtherActions = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: normal;
+  padding: 0px 60px 0px 60px;
+
+  button {
+    align-self: center;
+    width: 100%;
+    min-width: 40px;
+    max-width: 45vw;
+    min-height: 40px;
+    font-size: 3vw;
+    border: none;
+    background-color: #7f3e98;
+    color: #ffffff;
+    border-radius: 15px;
+    margin-bottom: 10px;
+
+    &:hover {
+      background-color: #a85dc5;
+      color: #ffffff;
+    }
+
+    @media (min-width: 1024px) {
+      width: 100%;
+      min-width: 20px;
+      max-width: 25vw;
+      height: 100%;
+      min-height: 40px;
+      max-height: 55vw;
+      font-size: 1.2vw;
+    }
+  }
+
+  .delete {
+    background-color: #ec3f3f;
+
+    &:hover {
+      background-color: #ee6d6d;
+    }
+
+    @media (min-width: 1024px) {
+    margin-top: 10px;
+  }
+  }
+
+  .change-password {
+    background-color: #524f4f;
+
+    &:hover {
+      background-color: #757070;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    padding: 15px 370px 15px 370px;
+  }
 `;
